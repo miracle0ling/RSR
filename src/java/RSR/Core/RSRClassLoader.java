@@ -14,14 +14,19 @@ public class RSRClassLoader extends ClassLoader{
     }
 
     @Override
-    protected Class<?> findClass(String name) throws ClassNotFoundException {
+    protected Class<?> findClass(String name) {
+        System.out.println(name);
         Class clazz = null;
         byte[] byteClass = getByteClass();
         if (byteClass == null) {
 //            log
             return null;
         }
-        clazz = defineClass(name, byteClass, 0, byteClass.length);
+        try {
+            clazz = defineClass(name, byteClass, 0, byteClass.length);
+        } catch (NoClassDefFoundError e) {
+            e.printStackTrace();
+        }
         return clazz;
     }
 

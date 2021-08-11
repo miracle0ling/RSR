@@ -17,8 +17,6 @@ public class Respository {
             path = this.getClass().getResource("/").getPath();
         }
 
-        System.out.println(path);
-
         File file = new File(path);
         File[] tempList = file.listFiles();
 
@@ -27,15 +25,18 @@ public class Respository {
                 //文件名，不包含路径
                 String fileName = tempList[i].getName();
                 String filePath = tempList[i].getPath();
-                if (Pattern.matches(fileName, "+.class")) {
-                    //
-//                    Class<?> aClass = new RSRClassLoader(filePath).findClass(fileName.replace("/","."));
-                    System.out.println(fileName);
-                    System.out.println(filePath);
+
+                if (Pattern.matches(".*.class",fileName)) {
+                    //加载类
+                    System.out.println("fileName :"+fileName);
+                    System.out.println("filePath :"+filePath);
+                    Class<?> aClass = new RSRClassLoader(filePath).findClass(fileName);
+                    if (aClass != null) {
+                        classes.add(aClass);
+                    }
                 }
             }
             if (tempList[i].isDirectory()) {
-                //这里就不递归了，
                 readClass(tempList[i].getPath());
             }
         }
