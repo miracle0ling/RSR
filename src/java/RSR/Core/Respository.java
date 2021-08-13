@@ -2,6 +2,7 @@ package RSR.Core;
 
 
 import org.apache.commons.lang3.StringUtils;
+import sun.font.ScriptRun;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,6 +10,12 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Respository {
+
+    private String path;
+
+    public Respository(String path) {
+        this.path = path;
+    }
 
     protected List<Class<?>> classes = new ArrayList<Class<?>>();
 
@@ -26,13 +33,16 @@ public class Respository {
                 String fileName = tempList[i].getName();
                 String filePath = tempList[i].getPath();
 
-                if (Pattern.matches(".*.class",fileName)) {
+                if (Pattern.matches(".*.class", fileName)) {
                     //加载类
-                    System.out.println("fileName :"+fileName);
-                    System.out.println("filePath :"+filePath);
-                    Class<?> aClass = new RSRClassLoader(filePath).findClass(fileName);
+                    System.out.println("fileName :" + fileName);
+                    System.out.println("filePath :" + filePath);
+                    String spilt = "classes\\\\";
+                    String classesName = filePath.split(spilt)[1].replace("\\", ".");
+                    System.out.println("classesName " + classesName);
+                    Class<?> aClass = new RSRClassLoader(filePath).findClass(classesName);
                     if (aClass != null) {
-                        classes.add(aClass);
+                        this.classes.add(aClass);
                     }
                 }
             }
